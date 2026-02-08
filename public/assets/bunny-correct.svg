@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 250" width="200" height="250">
+  <!-- น้องกระต่ายท่าดีใจ (ตอบถูก) -->
+  <!-- หู (ตั้งขึ้น) -->
+  <ellipse cx="70" cy="40" rx="20" ry="45" fill="#FFB6C1" stroke="#FF69B4" stroke-width="2" transform="rotate(-10, 70, 40)"/>
+  <ellipse cx="70" cy="40" rx="12" ry="35" fill="#FFC0CB" transform="rotate(-10, 70, 40)"/>
+  <ellipse cx="130" cy="40" rx="20" ry="45" fill="#FFB6C1" stroke="#FF69B4" stroke-width="2" transform="rotate(10, 130, 40)"/>
+  <ellipse cx="130" cy="40" rx="12" ry="35" fill="#FFC0CB" transform="rotate(10, 130, 40)"/>
+  <!-- หัว -->
+  <circle cx="100" cy="120" r="55" fill="#FFB6C1" stroke="#FF69B4" stroke-width="2"/>
+  <!-- ตา (ดีใจ - หลับตายิ้ม) -->
+  <path d="M 74 110 Q 82 104 90 110" fill="none" stroke="#333" stroke-width="3" stroke-linecap="round"/>
+  <path d="M 110 110 Q 118 104 126 110" fill="none" stroke="#333" stroke-width="3" stroke-linecap="round"/>
+  <!-- จมูก -->
+  <ellipse cx="100" cy="125" rx="5" ry="4" fill="#FF69B4"/>
+  <!-- ปากยิ้มกว้าง -->
+  <path d="M 85 132 Q 100 150 115 132" fill="#FF69B4" stroke="#FF1493" stroke-width="2"/>
+  <path d="M 90 132 Q 100 143 110 132" fill="#FFC0CB"/>
+  <!-- แก้ม (แดงกว่าปกติ) -->
+  <circle cx="68" cy="125" r="10" fill="#FF69B4" opacity="0.4"/>
+  <circle cx="132" cy="125" r="10" fill="#FF69B4" opacity="0.4"/>
+  <!-- ดาวรอบหัว -->
+  <text x="45" y="80" font-size="16" fill="#FFD700">★</text>
+  <text x="145" y="75" font-size="14" fill="#FFD700">★</text>
+  <text x="155" y="95" font-size="10" fill="#FFD700">★</text>
+  <!-- ตัว (กระโดดขึ้นเล็กน้อย) -->
+  <ellipse cx="100" cy="195" rx="40" ry="35" fill="#FFB6C1" stroke="#FF69B4" stroke-width="2"/>
+  <ellipse cx="100" cy="200" rx="25" ry="22" fill="#FFF0F5"/>
+  <!-- แขน (ชูมือ) -->
+  <ellipse cx="55" cy="185" rx="12" ry="8" fill="#FFB6C1" stroke="#FF69B4" stroke-width="2" transform="rotate(-30, 55, 185)"/>
+  <ellipse cx="145" cy="185" rx="12" ry="8" fill="#FFB6C1" stroke="#FF69B4" stroke-width="2" transform="rotate(30, 145, 185)"/>
+  <!-- เท้า -->
+  <ellipse cx="75" cy="228" rx="18" ry="10" fill="#FFB6C1" stroke="#FF69B4" stroke-width="2"/>
+  <ellipse cx="125" cy="228" rx="18" ry="10" fill="#FFB6C1" stroke="#FF69B4" stroke-width="2"/>
+</svg>
