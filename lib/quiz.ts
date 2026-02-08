@@ -3,6 +3,7 @@ import {
   CampaignWithConfig,
   CheckpointToken,
   LineUser,
+  QuizCharacter,
   QuizChoice,
   RedeemToken,
   SessionCheckpoint,
@@ -48,34 +49,57 @@ export async function getCampaignWithConfig(
     title: string;
     description: string | null;
     theme_id: number;
-    character_id: number;
     is_active: boolean;
     total_checkpoints: number;
     retry_rotate_question: boolean;
+    scene_background_url: string;
+    scene_characters: number[];
     theme_config: Record<string, string>;
-    char_id: number;
-    char_name: string;
-    asset_idle: string;
-    asset_correct: string;
-    asset_wrong: string;
-    char_metadata: Record<string, unknown>;
   }>(
     `SELECT
        c.id AS campaign_id, c.slug, c.title, c.description,
-       c.theme_id, c.character_id, c.is_active,
+       c.theme_id, c.is_active,
        c.total_checkpoints, c.retry_rotate_question,
-       t.config AS theme_config,
-       ch.id AS char_id, ch.name AS char_name,
-       ch.asset_idle, ch.asset_correct, ch.asset_wrong,
-       ch.metadata AS char_metadata
+       c.scene_background_url, c.scene_characters,
+       t.config AS theme_config
      FROM quiz_campaigns c
      JOIN quiz_themes t ON t.id = c.theme_id
-     JOIN quiz_characters ch ON ch.id = c.character_id
      WHERE c.id = $1`,
     [campaignId]
   );
 
   if (!row) return null;
+
+  // Resolve scene character IDs → full QuizCharacter objects
+  let sceneCharacters: QuizCharacter[] = [];
+  const charIds = row.scene_characters;
+  if (charIds?.length) {
+    const chars = await query<{
+      id: number;
+      name: string;
+      asset_idle: string;
+      asset_correct: string;
+      asset_wrong: string;
+      metadata: Record<string, unknown>;
+    }>(
+      `SELECT id, name, asset_idle, asset_correct, asset_wrong, metadata
+       FROM quiz_characters
+       WHERE id = ANY($1::bigint[])`,
+      [charIds]
+    );
+    // Maintain order from scene_characters array
+    sceneCharacters = charIds
+      .map((cid) => chars.find((c) => c.id === cid))
+      .filter((c): c is NonNullable<typeof c> => c != null)
+      .map((c) => ({
+        id: c.id,
+        name: c.name,
+        asset_idle: c.asset_idle,
+        asset_correct: c.asset_correct,
+        asset_wrong: c.asset_wrong,
+        metadata: c.metadata as unknown as QuizCharacter["metadata"],
+      }));
+  }
 
   return {
     campaign: {
@@ -84,20 +108,14 @@ export async function getCampaignWithConfig(
       title: row.title,
       description: row.description,
       theme_id: row.theme_id,
-      character_id: row.character_id,
       is_active: row.is_active,
       total_checkpoints: row.total_checkpoints,
       retry_rotate_question: row.retry_rotate_question,
+      scene_background_url: row.scene_background_url,
+      scene_characters: row.scene_characters,
     },
     theme: mergeTheme(row.theme_config),
-    character: {
-      id: row.char_id,
-      name: row.char_name,
-      asset_idle: row.asset_idle,
-      asset_correct: row.asset_correct,
-      asset_wrong: row.asset_wrong,
-      metadata: row.char_metadata as unknown as CampaignWithConfig["character"]["metadata"],
-    },
+    sceneCharacters,
   };
 }
 
@@ -116,11 +134,14 @@ export async function getCampaignBySlug(
 
 export async function validateCheckpointToken(
   token: string
-): Promise<CheckpointToken | null> {
-  return queryOne<CheckpointToken>(
-    `SELECT id, token, campaign_id, checkpoint_index, expires_at
-     FROM checkpoint_tokens
-     WHERE token = $1 AND expires_at > NOW()`,
+): Promise<(CheckpointToken & { category_name: string }) | null> {
+  return queryOne<CheckpointToken & { category_name: string }>(
+    `SELECT ct.id, ct.token, ct.campaign_id, ct.checkpoint_index,
+            ct.category_id, ct.expires_at,
+            qc.name AS category_name
+     FROM checkpoint_tokens ct
+     JOIN quiz_categories qc ON qc.id = ct.category_id
+     WHERE ct.token = $1 AND ct.expires_at > NOW()`,
     [token]
   );
 }
@@ -164,7 +185,7 @@ export async function getOrCreateUserSession(
 export async function getOrAssignCheckpointQuestion(
   sessionId: number,
   checkpointIndex: number,
-  campaignId: number
+  categoryId: number
 ): Promise<{
   sessionCheckpoint: SessionCheckpoint;
   question: { id: number; question_text: string; explanation: string | null } | null;
@@ -182,15 +203,15 @@ export async function getOrAssignCheckpointQuestion(
     ).rows[0] as SessionCheckpoint | undefined;
 
     if (!scp) {
-      // First visit to this checkpoint — assign a random question
+      // First visit — assign random question from this category's pool
       const question = (
         await client.query(
           `SELECT id, question_text, explanation
            FROM quiz_questions
-           WHERE campaign_id = $1 AND is_active = true
+           WHERE category_id = $1 AND is_active = true
            ORDER BY RANDOM()
            LIMIT 1`,
-          [campaignId]
+          [categoryId]
         )
       ).rows[0] as { id: number; question_text: string; explanation: string | null } | undefined;
 
@@ -254,17 +275,23 @@ export async function submitCheckpointAnswer(
   explanation: string | null;
   isCheckpointComplete: boolean;
   isAllComplete: boolean;
+  checkpointIndex: number;
+  categoryName: string;
   redeemToken: string | null;
   newQuestion: { id: number; question_text: string; explanation: string | null; choices: QuizChoice[] } | null;
   progress: { completed: number; total: number; checkpoints: { index: number; isCompleted: boolean }[] };
 } | null> {
   return withTransaction(async (client) => {
-    // Get session_checkpoint with lock + verify ownership
+    // Get session_checkpoint with lock + verify ownership + resolve category
     const scp = (
       await client.query(
-        `SELECT sc.*, us.user_id, us.campaign_id, us.id AS session_id
+        `SELECT sc.*, us.user_id, us.campaign_id, us.id AS session_id,
+                ct.category_id, qc.name AS category_name
          FROM session_checkpoints sc
          JOIN user_sessions us ON us.id = sc.session_id
+         JOIN checkpoint_tokens ct ON ct.campaign_id = us.campaign_id
+                                  AND ct.checkpoint_index = sc.checkpoint_index
+         JOIN quiz_categories qc ON qc.id = ct.category_id
          WHERE sc.id = $1
          FOR UPDATE OF sc`,
         [sessionCheckpointId]
@@ -383,17 +410,17 @@ export async function submitCheckpointAnswer(
           )
         ).rows.map((r: { question_id: number }) => r.question_id);
 
-        // Find a new question NOT IN previously attempted
+        // Find a new question from this category's pool, NOT IN previously attempted
         const nextQ = (
           await client.query(
             `SELECT id, question_text, explanation
              FROM quiz_questions
-             WHERE campaign_id = $1
+             WHERE category_id = $1
                AND is_active = true
                AND id != ALL($2::bigint[])
              ORDER BY RANDOM()
              LIMIT 1`,
-            [scp.campaign_id, attemptedIds]
+            [scp.category_id, attemptedIds]
           )
         ).rows[0] as { id: number; question_text: string; explanation: string | null } | undefined;
 
@@ -414,15 +441,15 @@ export async function submitCheckpointAnswer(
 
           newQuestion = { ...nextQ, choices: nextChoices };
         } else {
-          // All questions exhausted — cycle back: pick random from all campaign questions
+          // All questions exhausted — cycle back: pick random from this category's pool
           const cycledQ = (
             await client.query(
               `SELECT id, question_text, explanation
                FROM quiz_questions
-               WHERE campaign_id = $1 AND is_active = true
+               WHERE category_id = $1 AND is_active = true
                ORDER BY RANDOM()
                LIMIT 1`,
-              [scp.campaign_id]
+              [scp.category_id]
             )
           ).rows[0] as { id: number; question_text: string; explanation: string | null } | undefined;
 
@@ -456,6 +483,8 @@ export async function submitCheckpointAnswer(
       explanation: questionRow.explanation,
       isCheckpointComplete: isCorrect,
       isAllComplete,
+      checkpointIndex: scp.checkpoint_index,
+      categoryName: scp.category_name,
       redeemToken,
       newQuestion,
       progress,

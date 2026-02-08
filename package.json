@@ -7,8 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "db:init": "psql $DATABASE_URL -f sql/schema_v2.sql",
-    "db:seed": "psql $DATABASE_URL -f sql/seed_v2.sql",
+    "db:init": "psql $DATABASE_URL -f sql/schema.sql",
+    "db:seed": "psql $DATABASE_URL -f sql/seed.sql",
     "db:reset": "npm run db:init && npm run db:seed"
   },
   "dependencies": {

@@ -1,26 +1,26 @@
 "use client";
 
 // ============================================================
-// CheckpointProgress - แสดงจุดเช็คพอยต์ 5 จุด
+// CheckpointProgress - แสดงความคืบหน้าสะสม
 // ============================================================
-// Completed = เขียว + เครื่องหมายถูก
-// Current = ไฮไลท์ + border
-// Pending = เทา
+// แสดง total ช่อง: ช่องที่สะสมแล้ว = เขียว ✓, ช่องปัจจุบัน = ไฮไลท์, ที่เหลือ = เทา
+// ไม่ผูกกับเลขจุดเช็คพอยต์ — สแกนจุดไหนก่อนก็ได้
 // ============================================================
 
 interface CheckpointProgressProps {
-  checkpoints: { index: number; isCompleted: boolean }[];
-  currentIndex: number;
   total: number;
   completed: number;
+  /** true เมื่อกำลังอยู่ที่จุดที่ยังไม่ผ่าน (แสดง current highlight) */
+  showCurrent?: boolean;
 }
 
 export default function CheckpointProgress({
-  checkpoints,
-  currentIndex,
   total,
   completed,
+  showCurrent = false,
 }: CheckpointProgressProps) {
+  const slots = Array.from({ length: total }, (_, i) => i);
+
   return (
     <div className="w-full max-w-sm mx-auto">
       <p
@@ -30,17 +30,17 @@ export default function CheckpointProgress({
         จุดเช็คพอยต์ {completed}/{total}
       </p>
       <div className="flex items-center justify-center gap-3">
-        {checkpoints.map((cp) => {
-          const isCurrent = cp.index === currentIndex;
-          const isCompleted = cp.isCompleted;
+        {slots.map((i) => {
+          const isCompleted = i < completed;
+          const isCurrent = showCurrent && i === completed;
 
           return (
-            <div key={cp.index} className="flex flex-col items-center gap-1">
+            <div key={i} className="flex flex-col items-center gap-1">
               <div
                 className={`
                   w-10 h-10 rounded-full flex items-center justify-center
                   text-sm font-bold transition-all duration-300
-                  ${isCurrent && !isCompleted ? "scale-110" : ""}
+                  ${isCurrent ? "scale-110" : ""}
                 `}
                 style={{
                   backgroundColor: isCompleted
@@ -49,7 +49,7 @@ export default function CheckpointProgress({
                       ? "var(--qr-btn)"
                       : "#e0e0e0",
                   color: isCompleted || isCurrent ? "white" : "#999",
-                  boxShadow: isCurrent && !isCompleted
+                  boxShadow: isCurrent
                     ? "0 0 0 3px var(--qr-shadow)"
                     : "none",
                 }}
@@ -69,7 +69,7 @@ export default function CheckpointProgress({
                     />
                   </svg>
                 ) : (
-                  cp.index
+                  i + 1
                 )}
               </div>
             </div>

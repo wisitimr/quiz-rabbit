@@ -52,9 +52,8 @@ export async function POST(request: NextRequest) {
       correctChoiceId: result.correctChoiceId,
       explanation: result.explanation,
       checkpoint: {
-        index: result.progress.checkpoints.find(
-          (cp) => cp.isCompleted === result.isCheckpointComplete
-        )?.index,
+        index: result.checkpointIndex,
+        categoryName: result.categoryName,
         isCompleted: result.isCheckpointComplete,
       },
       progress: result.progress,

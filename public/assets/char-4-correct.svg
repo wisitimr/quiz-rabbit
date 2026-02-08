@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 250" width="200" height="250">
+  <!-- สุนัขเหลือง - ดีใจ -->
+  <ellipse cx="62" cy="100" rx="18" ry="32" fill="#F5D76E" stroke="#D4A843" stroke-width="2" transform="rotate(-15,62,100)"/>
+  <ellipse cx="62" cy="100" rx="10" ry="22" fill="#FBE9A0" transform="rotate(-15,62,100)"/>
+  <ellipse cx="138" cy="100" rx="18" ry="32" fill="#F5D76E" stroke="#D4A843" stroke-width="2" transform="rotate(15,138,100)"/>
+  <ellipse cx="138" cy="100" rx="10" ry="22" fill="#FBE9A0" transform="rotate(15,138,100)"/>
+  <circle cx="100" cy="115" r="50" fill="#F5D76E" stroke="#D4A843" stroke-width="2"/>
+  <path d="M 74 108 Q 82 102 90 108" fill="none" stroke="#333" stroke-width="3" stroke-linecap="round"/>
+  <path d="M 110 108 Q 118 102 126 108" fill="none" stroke="#333" stroke-width="3" stroke-linecap="round"/>
+  <ellipse cx="100" cy="122" rx="7" ry="5" fill="#D4A843"/>
+  <path d="M 88 130 Q 100 146 112 130" fill="#D4A843" stroke="#C09838" stroke-width="2"/>
+  <ellipse cx="100" cy="140" rx="6" ry="7" fill="#FF8888" opacity="0.8"/>
+  <circle cx="68" cy="124" r="7" fill="#FBE9A0" opacity="0.6"/>
+  <circle cx="132" cy="124" r="7" fill="#FBE9A0" opacity="0.6"/>
+  <text x="42" y="78" font-size="16" fill="#FFD700">&#x2605;</text>
+  <text x="148" y="73" font-size="14" fill="#FFD700">&#x2605;</text>
+  <ellipse cx="100" cy="198" rx="38" ry="33" fill="#F5D76E" stroke="#D4A843" stroke-width="2"/>
+  <ellipse cx="100" cy="202" rx="24" ry="20" fill="#FBE9A0"/>
+  <ellipse cx="55" cy="186" rx="11" ry="7" fill="#F5D76E" stroke="#D4A843" stroke-width="2" transform="rotate(-30,55,186)"/>
+  <ellipse cx="145" cy="186" rx="11" ry="7" fill="#F5D76E" stroke="#D4A843" stroke-width="2" transform="rotate(30,145,186)"/>
+  <ellipse cx="74" cy="228" rx="17" ry="10" fill="#F5D76E" stroke="#D4A843" stroke-width="2"/>
+  <ellipse cx="126" cy="228" rx="17" ry="10" fill="#F5D76E" stroke="#D4A843" stroke-width="2"/>
+</svg>

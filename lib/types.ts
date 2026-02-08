@@ -52,23 +52,31 @@ export interface QuizCampaign {
   title: string;
   description: string | null;
   theme_id: number;
-  character_id: number;
   is_active: boolean;
   total_checkpoints: number;
   retry_rotate_question: boolean;
+  scene_background_url: string;
+  scene_characters: number[];
 }
 
 // --- ข้อมูลแคมเปญที่รวม theme + character แล้ว ---
 export interface CampaignWithConfig {
   campaign: QuizCampaign;
   theme: ThemeConfig;
-  character: QuizCharacter;
+  /** ตัวละครจาก scene_characters — resolved จาก quiz_characters */
+  sceneCharacters: QuizCharacter[];
+}
+
+// --- หมวดหมู่คำถาม ---
+export interface QuizCategory {
+  id: number;
+  name: string;
 }
 
 // --- คำถาม ---
 export interface QuizQuestion {
   id: number;
-  campaign_id: number;
+  category_id: number;
   question_text: string;
   explanation: string | null;
 }
@@ -101,6 +109,7 @@ export interface CheckpointToken {
   token: string;
   campaign_id: number;
   checkpoint_index: number;
+  category_id: number;
   expires_at: string;
 }
 
@@ -142,6 +151,7 @@ export interface CheckpointEnterResponse {
   campaign: CampaignWithConfig;
   checkpoint: {
     index: number;
+    categoryName: string;
     isCompleted: boolean;
   };
   progress: {
@@ -164,6 +174,7 @@ export interface CheckpointAnswerResponse {
   explanation: string | null;
   checkpoint: {
     index: number;
+    categoryName: string;
     isCompleted: boolean;
   };
   progress: {

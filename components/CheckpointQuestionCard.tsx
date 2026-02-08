@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useCallback } from "react";
-import { QuizChoice, CampaignWithConfig } from "@/lib/types";
+import { QuizChoice, CampaignWithConfig, QuizCharacter } from "@/lib/types";
 import CharacterDisplay from "./CharacterDisplay";
 
 // ============================================================
@@ -19,6 +19,8 @@ interface CheckpointQuestionCardProps {
   sessionCheckpointId: number;
   checkpointToken: string;
   campaign: CampaignWithConfig;
+  /** checkpoint index (1-based) — ใช้เลือก sceneChar ที่ตรงกับจุด */
+  checkpointIndex: number;
   onCorrectAnswer?: () => void;
   onAllComplete?: (redeemToken: string) => void;
   onQuestionRotate?: (newQuestion: {
@@ -36,10 +38,16 @@ export default function CheckpointQuestionCard({
   choices,
   sessionCheckpointId,
   campaign,
+  checkpointIndex,
   onCorrectAnswer,
   onAllComplete,
   onQuestionRotate,
 }: CheckpointQuestionCardProps) {
+  // เลือกตัวละครตามเลขจุดเช็คพอยต์ (1-based → 0-based)
+  const sceneChars = campaign.sceneCharacters;
+  const character: QuizCharacter = sceneChars?.length
+    ? sceneChars[(checkpointIndex - 1) % sceneChars.length]
+    : campaign.sceneCharacters[0];
   const [selectedChoiceId, setSelectedChoiceId] = useState<number | null>(null);
   const [answerState, setAnswerState] = useState<AnswerState>("idle");
   const [correctChoiceId, setCorrectChoiceId] = useState<number | null>(null);
@@ -120,7 +128,7 @@ export default function CheckpointQuestionCard({
       {/* ตัวละคร */}
       <div className="flex justify-center py-2">
         <CharacterDisplay
-          character={campaign.character}
+          character={character}
           state={answered ? (answerState as "correct" | "wrong") : "idle"}
           showPhrase={answered}
         />
@@ -283,6 +291,7 @@ declare global {
       init(config: { liffId: string }): Promise<void>;
       isLoggedIn(): boolean;
       login(): void;
+      scanCodeV2(): Promise<{ value: string | null }>;
     };
   }
 }

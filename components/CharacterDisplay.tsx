@@ -6,9 +6,6 @@ import { QuizCharacter, CharacterMetadata } from "@/lib/types";
 // ============================================================
 // CharacterDisplay - แสดงตัวละครตามสถานะ (ปกติ/ตอบถูก/ตอบผิด)
 // ============================================================
-// เปลี่ยนตัวละครได้ง่าย: แค่เปลี่ยน character ใน DB
-// component นี้ใช้ asset URL จาก DB ไม่ได้ hardcode ตัวละครใดตัวหนึ่ง
-// ============================================================
 
 type CharacterState = "idle" | "correct" | "wrong";
 
@@ -34,18 +31,21 @@ function getRandomPhrase(
   return phrases[Math.floor(Math.random() * phrases.length)];
 }
 
+function resolveAssetUrl(
+  state: CharacterState,
+  character: QuizCharacter
+): string {
+  if (state === "correct") return character.asset_correct || character.asset_idle;
+  if (state === "wrong") return character.asset_wrong || character.asset_idle;
+  return character.asset_idle;
+}
+
 export default function CharacterDisplay({
   character,
   state,
   showPhrase = false,
 }: CharacterDisplayProps) {
-  // เลือก asset ตามสถานะ
-  const assetUrl =
-    state === "correct"
-      ? character.asset_correct
-      : state === "wrong"
-        ? character.asset_wrong
-        : character.asset_idle;
+  const assetUrl = resolveAssetUrl(state, character);
 
   const phrase = showPhrase
     ? getRandomPhrase(character.metadata, state)

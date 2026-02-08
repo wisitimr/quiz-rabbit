@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 250" width="200" height="250">
+  <!-- หมีม่วง (Purple Bear) -->
+  <!-- หู -->
+  <circle cx="65" cy="72" r="22" fill="#B088D4" stroke="#9066B0" stroke-width="2"/>
+  <circle cx="65" cy="72" r="13" fill="#D4B8E8"/>
+  <circle cx="135" cy="72" r="22" fill="#B088D4" stroke="#9066B0" stroke-width="2"/>
+  <circle cx="135" cy="72" r="13" fill="#D4B8E8"/>
+  <!-- หัว -->
+  <circle cx="100" cy="120" r="55" fill="#B088D4" stroke="#9066B0" stroke-width="2"/>
+  <!-- ตา -->
+  <circle cx="80" cy="110" r="7" fill="white"/>
+  <circle cx="82" cy="111" r="4.5" fill="#333"/>
+  <circle cx="84" cy="109" r="1.8" fill="white"/>
+  <circle cx="120" cy="110" r="7" fill="white"/>
+  <circle cx="122" cy="111" r="4.5" fill="#333"/>
+  <circle cx="124" cy="109" r="1.8" fill="white"/>
+  <!-- จมูก -->
+  <ellipse cx="100" cy="125" rx="8" ry="6" fill="#D4B8E8"/>
+  <ellipse cx="100" cy="124" rx="4" ry="3" fill="#9066B0"/>
+  <!-- ปาก -->
+  <path d="M 94 132 Q 100 138 106 132" fill="none" stroke="#9066B0" stroke-width="2" stroke-linecap="round"/>
+  <!-- แก้ม -->
+  <circle cx="66" cy="126" r="7" fill="#D4B8E8" opacity="0.6"/>
+  <circle cx="134" cy="126" r="7" fill="#D4B8E8" opacity="0.6"/>
+  <!-- ตัว -->
+  <ellipse cx="100" cy="202" rx="42" ry="36" fill="#B088D4" stroke="#9066B0" stroke-width="2"/>
+  <ellipse cx="100" cy="207" rx="27" ry="23" fill="#D4B8E8"/>
+  <!-- เท้า -->
+  <ellipse cx="72" cy="234" rx="18" ry="11" fill="#B088D4" stroke="#9066B0" stroke-width="2"/>
+  <ellipse cx="128" cy="234" rx="18" ry="11" fill="#B088D4" stroke="#9066B0" stroke-width="2"/>
+</svg>

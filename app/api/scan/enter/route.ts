@@ -65,7 +65,7 @@ export async function GET(request: NextRequest) {
     const result = await getOrAssignCheckpointQuestion(
       session.id,
       cpToken.checkpoint_index,
-      cpToken.campaign_id
+      cpToken.category_id
     );
 
     if (!result) {
@@ -91,6 +91,7 @@ export async function GET(request: NextRequest) {
       campaign: campaignConfig,
       checkpoint: {
         index: cpToken.checkpoint_index,
+        categoryName: cpToken.category_name,
         isCompleted: result.sessionCheckpoint.is_completed,
       },
       progress,

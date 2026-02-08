@@ -1,16 +1,8 @@
-import Image from "next/image";
-
 export default function ScanNotFound() {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-yellow-50 to-pink-50 p-6">
       <div className="text-center max-w-sm">
-        <Image
-          src="/assets/bunny-wrong.svg"
-          alt="Not Found"
-          width={120}
-          height={150}
-          className="mx-auto mb-6"
-        />
+        <div className="text-5xl mb-6">❌</div>
         <h1 className="text-xl font-bold text-pink-500 mb-3">
           ลิงก์ไม่ถูกต้อง
         </h1>

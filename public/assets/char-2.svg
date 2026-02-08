@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 250" width="200" height="250">
+  <!-- แมวส้ม (Orange Cat) -->
+  <!-- หู -->
+  <polygon points="65,75 55,25 90,65" fill="#FFAA55" stroke="#E8903C" stroke-width="2"/>
+  <polygon points="68,70 60,32 86,63" fill="#FFD4A8"/>
+  <polygon points="135,75 145,25 110,65" fill="#FFAA55" stroke="#E8903C" stroke-width="2"/>
+  <polygon points="132,70 140,32 114,63" fill="#FFD4A8"/>
+  <!-- หัว -->
+  <circle cx="100" cy="120" r="52" fill="#FFAA55" stroke="#E8903C" stroke-width="2"/>
+  <!-- ตา -->
+  <ellipse cx="80" cy="112" rx="8" ry="9" fill="white"/>
+  <ellipse cx="82" cy="113" rx="4" ry="6" fill="#2D8B2D"/>
+  <circle cx="83" cy="111" r="2" fill="white"/>
+  <ellipse cx="120" cy="112" rx="8" ry="9" fill="white"/>
+  <ellipse cx="122" cy="113" rx="4" ry="6" fill="#2D8B2D"/>
+  <circle cx="123" cy="111" r="2" fill="white"/>
+  <!-- จมูก -->
+  <ellipse cx="100" cy="126" rx="5" ry="3.5" fill="#E8903C"/>
+  <!-- ปาก -->
+  <path d="M 93 131 Q 100 137 107 131" fill="none" stroke="#E8903C" stroke-width="1.8" stroke-linecap="round"/>
+  <!-- หนวด -->
+  <line x1="55" y1="122" x2="78" y2="126" stroke="#E8903C" stroke-width="1.2"/>
+  <line x1="55" y1="130" x2="78" y2="130" stroke="#E8903C" stroke-width="1.2"/>
+  <line x1="122" y1="126" x2="145" y2="122" stroke="#E8903C" stroke-width="1.2"/>
+  <line x1="122" y1="130" x2="145" y2="130" stroke="#E8903C" stroke-width="1.2"/>
+  <!-- ตัว -->
+  <ellipse cx="100" cy="200" rx="38" ry="34" fill="#FFAA55" stroke="#E8903C" stroke-width="2"/>
+  <ellipse cx="100" cy="205" rx="24" ry="20" fill="#FFE4C4"/>
+  <!-- เท้า -->
+  <ellipse cx="75" cy="230" rx="16" ry="10" fill="#FFAA55" stroke="#E8903C" stroke-width="2"/>
+  <ellipse cx="125" cy="230" rx="16" ry="10" fill="#FFAA55" stroke="#E8903C" stroke-width="2"/>
+</svg>

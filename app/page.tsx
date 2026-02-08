@@ -1,10 +1,5 @@
-import Image from "next/image";
-
 // ============================================================
 // หน้าแรก - Landing page (SSR)
-// ============================================================
-// หน้านี้เป็น Server Component (default)
-// ไม่ต้องใช้ interactivity จึงไม่ต้อง "use client"
 // ============================================================
 
 export default function HomePage() {
@@ -16,25 +11,14 @@ export default function HomePage() {
       }}
     >
       <div className="text-center max-w-md">
-        {/* ตัวละคร */}
-        <div className="mb-6">
-          <Image
-            src="/assets/bunny-idle.svg"
-            alt="Quiz Rabbit"
-            width={160}
-            height={200}
-            priority
-          />
-        </div>
-
         {/* หัวข้อ */}
         <h1 className="text-3xl font-bold text-pink-500 mb-3">
           Quiz Rabbit
         </h1>
         <p className="text-gray-600 mb-8">
-          สแกน QR Code เพื่อเริ่มเล่นเกมตอบคำถาม
+          สแกน QR Code ตาม 5 จุดเช็คพอยต์
           <br />
-          กับน้องกระต่ายกันเถอะ!
+          ตอบคำถามให้ครบ แลกรางวัล!
         </p>
 
         {/* คำแนะนำ */}
@@ -45,25 +29,25 @@ export default function HomePage() {
               <span className="flex-shrink-0 w-6 h-6 rounded-full bg-pink-100 text-pink-500 flex items-center justify-center font-bold text-xs">
                 1
               </span>
-              <span>เปิดแอป LINE แล้วสแกน QR Code</span>
+              <span>สแกน QR Code ที่จุดเช็คพอยต์</span>
             </li>
             <li className="flex gap-3">
               <span className="flex-shrink-0 w-6 h-6 rounded-full bg-pink-100 text-pink-500 flex items-center justify-center font-bold text-xs">
                 2
               </span>
-              <span>ตอบคำถาม 10 ข้อ (เลือกจาก 4 ตัวเลือก)</span>
+              <span>ตอบคำถาม 1 ข้อให้ถูกต้อง</span>
             </li>
             <li className="flex gap-3">
               <span className="flex-shrink-0 w-6 h-6 rounded-full bg-pink-100 text-pink-500 flex items-center justify-center font-bold text-xs">
                 3
               </span>
-              <span>คำถามจะถูกสุ่มไม่ซ้ำกันในแต่ละรอบ</span>
+              <span>ไปสแกนจุดถัดไป จนครบ 5 จุด</span>
             </li>
             <li className="flex gap-3">
               <span className="flex-shrink-0 w-6 h-6 rounded-full bg-pink-100 text-pink-500 flex items-center justify-center font-bold text-xs">
                 4
               </span>
-              <span>ดูคะแนนรวมเมื่อตอบครบทุกข้อ</span>
+              <span>รับ QR Code แลกรางวัล!</span>
             </li>
           </ol>
         </div>
